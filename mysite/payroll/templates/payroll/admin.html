@@ -1,5 +1,9 @@
 <h1>{{ title }}</h1>
 
+{% if upload_error %}
+    <h2>Duplicated report detected! Please use another one.</h2>
+{% endif %}
+
 <form enctype="multipart/form-data" method="post" action="/payroll/report/">
 {% csrf_token %}
     <input name="uploaded_file" type="file" />
