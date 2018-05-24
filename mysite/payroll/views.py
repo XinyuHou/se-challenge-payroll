@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 import datetime
 
 from .models import Payroll
-from payroll.util.classes import PayPeriod
+from payroll.util.classes import PayPeriod, ReportParser
 
 def all_payroll(request):
     first_five_payroll = Payroll.objects.order_by('employee')
@@ -31,4 +31,15 @@ def admin(request):
     return render(request, 'payroll/admin.html', context)
 
 def report(request):
+    if request.method == 'POST' and request.FILES['uploaded_file']:
+        report_parser = ReportParser(request.FILES['uploaded_file'])
+
+        # check if report is parsed before, todo dup report problem
+
+        # get payslips, todo check ORM session
+
+        # for add up each payslips according to employee id
+
+        # update payroll
+
     return redirect('payroll:all_payroll')
