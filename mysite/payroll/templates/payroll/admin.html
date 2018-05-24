@@ -1,0 +1,7 @@
+<h1>{{ title }}</h1>
+
+<form enctype="multipart/form-data" method="post" action="/payroll/report/">
+{% csrf_token %}
+    <input name="uploaded_file" type="file" />
+    <input type="submit" value="Upload" />
+</form>
