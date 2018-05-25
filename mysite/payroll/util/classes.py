@@ -15,20 +15,20 @@ class PayPeriod:
             self.end_date = datetime.date(year, month, last_day)
 
     def __str__(self):
-        return self.to_str()
-
-    def to_str(self):
-        # return a date period, mm/01/yy - mm/15/yy or mm/16/yy - mm/last_day/yy
         return self.start_date.strftime('%m/%d/%Y') + ' - ' + self.end_date.strftime('%m/%d/%Y')
 
 class ReportParser:
     def __init__(self, report):
-        self.report = report
+        data = report.decode("utf-8")
+        self.report_lines = []
+        for line in data.splitlines():
+            self.report_lines.append(tuple(line.split(",")))
 
     def id(self):
-        # return report id
-        return 1
+        last_line = self.report_lines[len(self.report_lines) - 1]
+
+        return int(last_line[1])
 
     def payslips(self):
         # return all payslips as a list
-        return []
+        return self.report_lines[ 1 : len(self.report_lines) - 1]
