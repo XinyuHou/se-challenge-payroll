@@ -1,8 +1,9 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-import datetime
+from datetime import datetime
+from django.db import transaction
+from django.db.models import Q
 
-from .models import Payroll
+from .models import Payroll, Report, JobGroup, Payslip
 from payroll.util.classes import PayPeriod, ReportParser
 
 def all_payroll(request):
