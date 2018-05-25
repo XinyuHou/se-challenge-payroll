@@ -89,4 +89,27 @@ def report(request):
 
                 payslip_group[(int(employee_id), pay_period.start_date)] = salary + float(hours) * job_rate(job_group)
 
+            # update payroll
+            for payroll in payslip_group:
+                employee_id = payroll[0]
+                pay_period_start = payroll[1]
+                payment = payslip_group[(employee_id, pay_period_start)]
+
+                criterion1 = Q(employee = employee_id)
+                criterion2 = Q(start_date__lte = pay_period_start)
+                criterion3 = Q(end_date__gte = pay_period_start)
+
+                payrolls = Payroll.objects.filter(criterion1 & criterion2 & criterion3)
+                if len(payrolls) == 1:
+                    pr = payrolls[0]
+                    pr.amount += payment
+                else:
+                    pr = Payroll()
+                    pp = PayPeriod(pay_period_start)
+                    pr.employee = employee_id
+                    pr.start_date = pp.start_date
+                    pr.end_date = pp.end_date
+                    pr.amount = payment
+
+                pr.save()
     return redirect('payroll:all_payroll')
