@@ -6,10 +6,10 @@ from .models import Payroll
 from payroll.util.classes import PayPeriod, ReportParser
 
 def all_payroll(request):
-    first_five_payroll = Payroll.objects.order_by('employee')
+    payrolls = Payroll.objects.order_by('employee')
     context = {
         'title': "Welcome to this new payroll system!",
-        'payrolls': first_five_payroll,
+        'payrolls': payrolls,
     }
 
     return render(request, 'payroll/payroll.html', context)
