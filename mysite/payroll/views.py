@@ -112,4 +112,9 @@ def report(request):
                     pr.amount = payment
 
                 pr.save()
+
+            # Update report
+            r = Report(id = report_id)
+            r.save()
+
     return redirect('payroll:all_payroll')
