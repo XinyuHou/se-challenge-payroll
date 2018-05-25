@@ -69,4 +69,24 @@ def report(request):
                         return job
                 return None
 
+            # add up each payslip according to employee id and PayPeriod
+            payslip_group = {}
+
+            for payslip in payslips:
+                date = payslip[0]
+                employee_id = payslip[2]
+                hours = payslip[1]
+                job_group = payslip[3]
+
+                dt = datetime.strptime(date, "%d/%m/%Y")
+                pay_period = PayPeriod(dt)
+
+                result = payslip_group.get((int(employee_id), pay_period.start_date), None)
+
+                salary = 0
+                if (result):
+                    salary = result
+
+                payslip_group[(int(employee_id), pay_period.start_date)] = salary + float(hours) * job_rate(job_group)
+
     return redirect('payroll:all_payroll')
