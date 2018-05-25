@@ -52,5 +52,21 @@ def report(request):
             return response
 
         except Report.DoesNotExist:
+            # get payslips
+            payslips = report_parser.payslips()
+
+            # get all job groups
+            all_job_group = JobGroup.objects.all()
+            def job_rate(job_group):
+                for job in all_job_group:
+                    if (job.group == job_group):
+                        return job.rate
+                return 0
+
+            def job(job_group):
+                for job in all_job_group:
+                    if (job.group == job_group):
+                        return job
+                return None
 
     return redirect('payroll:all_payroll')
