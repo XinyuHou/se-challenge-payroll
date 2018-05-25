@@ -37,14 +37,20 @@ def admin(request):
 
 def report(request):
     if request.method == 'POST' and request.FILES['uploaded_file']:
-        report_parser = ReportParser(request.FILES['uploaded_file'])
+        file = request.FILES['uploaded_file']
+        data = file.read()
 
-        # check if report is parsed before, todo dup report problem
+        report_parser = ReportParser(data)
 
-        # get payslips, todo check ORM session
+        # check if report is parsed before
+        try:
+            report_id = report_parser.id()
+            report = Report.objects.get(pk = report_id)
 
-        # for add up each payslips according to employee id
+            response = redirect('payroll:admin')
+            response['Location'] += '?upload_error=true'
+            return response
 
-        # update payroll
+        except Report.DoesNotExist:
 
     return redirect('payroll:all_payroll')
