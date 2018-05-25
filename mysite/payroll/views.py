@@ -24,8 +24,13 @@ def individual_payroll(request, employee_id):
     return render(request, 'payroll/payroll.html', context)
 
 def admin(request):
+    data = request.GET
+    upload_error = False
+    if ('upload_error' in data):
+        upload_error = True
     context = {
         'title': "Please select a report file you want to upload!",
+        'upload_error': upload_error
     }
 
     return render(request, 'payroll/admin.html', context)
